@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Add ngr-ladda to your project",
+      "factory": "./schematics/ng-add/index#ngAdd"
+    }
+  }
+}

@@ -11,6 +11,11 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "paths": {
+      "ngr-ladda": [
+        "./dist/ngr-ladda"
+      ]
+    },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
