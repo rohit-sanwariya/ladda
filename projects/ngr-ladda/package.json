@@ -1,7 +1,7 @@
 {
   "name": "ngr-ladda",
-  "version": "0.0.4",
-    "schematics": "./collection.json",
+  "version": "0.0.5",
+  "schematics": "./collection.json",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0"
@@ -9,5 +9,13 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "keywords": [
+    "angular",
+    "ladda",
+    "angular-ladda",
+    "angular-ladda-button",
+    "angular-ladda-spinner",
+    "angular-ladda-spinner-button"
+  ]
 }
