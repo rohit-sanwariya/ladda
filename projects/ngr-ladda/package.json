@@ -1,6 +1,6 @@
 {
   "name": "ngr-ladda",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "schematics": "./collection.json",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
@@ -16,6 +16,7 @@
     "angular-ladda",
     "angular-ladda-button",
     "angular-ladda-spinner",
-    "angular-ladda-spinner-button"
+    "angular-ladda-spinner-button",
+    "ngr-ladda"
   ]
 }
