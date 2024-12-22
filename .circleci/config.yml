@@ -4,16 +4,6 @@ version: 2.1
 orbs:
   node: circleci/node@5
 jobs:
-  test-node:
-    # Install node dependencies and run tests
-    executor: node/default
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Run tests
-          command: npm test --passWithNoTests
   build-node:
     # Build node project
     executor: node/default
@@ -22,33 +12,36 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm run build
+          name: Build Library
+          command: npm run build:lib
       - run:
           name: Create the ~/artifacts directory if it doesn't exist
           command: mkdir -p ~/artifacts
       # Copy output to artifacts dir
       - run:
           name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
+          command: cp -R dist/ngr-ladda ~/artifacts 2>/dev/null || true
       - store_artifacts:
           path: ~/artifacts
           destination: node-build
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
+  publish-npm:
+    # Publish npm package
+    executor: node/default
     steps:
-      # Replace this with steps to deploy to users
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Authenticate npm
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          name: Publish Package
+          command: npm publish dist/ngr-ladda --access public
+
 workflows:
-  build-and-test:
+  build-and-publish:
     jobs:
-      - test-node
-      - build-node:
+      - build-node
+      - publish-npm:
           requires:
-            - test-node
-    # - deploy:
-    #     requires:
-    #       - build-node
+            - build-node
