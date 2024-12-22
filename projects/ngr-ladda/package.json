@@ -1,6 +1,6 @@
 {
   "name": "ngr-ladda",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "schematics": "./collection.json",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
