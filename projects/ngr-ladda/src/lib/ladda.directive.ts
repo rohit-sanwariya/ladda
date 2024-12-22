@@ -15,10 +15,11 @@ export class LaddaDirective implements OnChanges {
   @Input('ladda') isLoading: boolean = false;
   @Input() spinnerSize: number = 16; // Default spinner size
   @Input() spinnerColor: string = '#fff'; // Default spinner color
-  @Input() progressText: string = ''; // Text to display during progress
+  @Input() progressText: string | null = null; // Text to display during progress
   @Input() progressType: 'spinner' | 'linear' = 'spinner'; // Progress type
 
   private progressElement: HTMLElement | null = null;
+  private originalButtonText: string = '';
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -32,10 +33,15 @@ export class LaddaDirective implements OnChanges {
     const button = this.el.nativeElement as HTMLButtonElement;
 
     if (isLoading) {
+      // Save the original button text
+      if (!this.originalButtonText) {
+        this.originalButtonText = button.innerHTML.trim();
+      }
+
       // Disable the button
       this.renderer.setAttribute(button, 'disabled', 'true');
 
-      // Add progress if not already added
+      // Replace button content with progress elements
       if (!this.progressElement) {
         if (this.progressType === 'spinner') {
           this.addSpinner(button);
@@ -44,23 +50,20 @@ export class LaddaDirective implements OnChanges {
         }
       }
 
-      // Add progress text
+      // Add progress text if defined
       if (this.progressText) {
-        const textElement = this.renderer.createText(` ${this.progressText}`);
-        this.renderer.appendChild(button, textElement);
+        const textNode = this.renderer.createText(` ${this.progressText}`);
+        this.renderer.appendChild(button, textNode);
       }
     } else {
-      // Enable the button and remove progress
+      // Enable the button and restore original text
       this.renderer.removeAttribute(button, 'disabled');
+      button.innerHTML = this.originalButtonText;
+
+      // Remove progress element
       if (this.progressElement) {
         this.renderer.removeChild(button, this.progressElement);
         this.progressElement = null;
-      }
-
-      // Remove progress text
-      const textNode = button.childNodes[button.childNodes.length - 1];
-      if (textNode.nodeType === Node.TEXT_NODE) {
-        this.renderer.removeChild(button, textNode);
       }
     }
   }
